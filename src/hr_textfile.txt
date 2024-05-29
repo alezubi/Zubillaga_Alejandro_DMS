@@ -1,0 +1,5 @@
+1,John,Doe,john.doe@example.com,1990-05-15,Manager,HR,2015-03-01,5000.00,555-1234,123 Main St
+2,Jane,Smith,jane.smith@example.com,1985-09-20,Developer,IT,2018-07-01,6500.00,555-5678,456 Oak Rd
+3,Michael,Johnson,michael.johnson@example.com,1992-11-30,Accountant,Finance,2020-01-15,4800.00,555-9012,789 Elm St
+4,Emily,Brown,emily.brown@example.com,1988-04-10,Sales Representative,Sales,2019-09-01,4200.00,555-3456,321 Pine Blvd
+5,David,Wilson,david.wilson@example.com,1995-07-25,HR Specialist,HR,2021-02-01,5500.00,555-7890,159 Maple Ave
