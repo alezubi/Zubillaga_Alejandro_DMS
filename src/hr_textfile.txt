@@ -3,3 +3,18 @@
 3,Michael,Johnson,michael.johnson@example.com,1992-11-30,Accountant,Finance,2020-01-15,4800.00,555-9012,789 Elm St
 4,Emily,Brown,emily.brown@example.com,1988-04-10,Sales Representative,Sales,2019-09-01,4200.00,555-3456,321 Pine Blvd
 5,David,Wilson,david.wilson@example.com,1995-07-25,HR Specialist,HR,2021-02-01,5500.00,555-7890,159 Maple Ave
+6,Sarah,Davis,sarah.davis@example.com,1982-12-01,Project Manager,IT,2016-04-01,6800.00,555-2468,246 Oak St
+7,Christopher,Lee,christopher.lee@example.com,1991-03-18,Software Engineer,IT,2019-11-01,5900.00,555-6789,369 Elm Blvd
+8,Jessica,Thompson,jessica.thompson@example.com,1987-06-05,Marketing Coordinator,Marketing,2017-08-15,4500.00,555-1357,753 Pine Rd
+9,Daniel,Anderson,daniel.anderson@example.com,1993-09-22,Financial Analyst,Finance,2020-06-01,5200.00,555-2468,159 Maple Ave
+10,Olivia,Martinez,olivia.martinez@example.com,1986-02-14,HR Manager,HR,2018-01-01,6200.00,555-3698,246 Oak St
+11,Matthew,Hernandez,matthew.hernandez@example.com,1989-11-07,Sales Manager,Sales,2019-05-01,5800.00,555-7890,369 Elm Blvd
+12,Isabella,Diaz,isabella.diaz@example.com,1984-08-19,Graphic Designer,Marketing,2017-02-15,4800.00,555-1357,753 Pine Rd
+13,William,Ramirez,william.ramirez@example.com,1990-04-03,IT Support Technician,IT,2018-09-01,4900.00,555-2468,159 Maple Ave
+14,Sophia,Morales,sophia.morales@example.com,1988-01-28,Accountant,Finance,2019-12-01,5400.00,555-3698,246 Oak St
+15,Alexander,Flores,alexander.flores@example.com,1992-06-12,Sales Representative,Sales,2020-03-01,4700.00,555-7890,369 Elm Blvd
+16,Ava,Reyes,ava.reyes@example.com,1985-10-09,HR Coordinator,HR,2017-11-01,5000.00,555-1357,753 Pine Rd
+17,Jacob,Castillo,jacob.castillo@example.com,1991-02-23,Software Developer,IT,2019-08-01,6100.00,555-2468,159 Maple Ave
+18,Isabella,Gutierrez,isabella.gutierrez@example.com,1987-05-16,Marketing Specialist,Marketing,2018-04-01,4900.00,555-3698,246 Oak St
+19,Ethan,Jimenez,ethan.jimenez@example.com,1993-12-04,Financial Analyst,Finance,2020-09-01,5300.00,555-7890,369 Elm Blvd
+20,Lucas,Rojas,lucas.rojas@example.com,1989-03-11,Project Manager,IT,2017-06-01,6400.00,555-1357,753 Pine Rd
