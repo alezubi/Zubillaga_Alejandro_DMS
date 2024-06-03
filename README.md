@@ -89,10 +89,20 @@ To use the Employee Management System, run the Main class. The application will 
 
 **Dependencies**
 
-The Employee Management System does not have any external dependencies. It uses the built-in Java libraries for file I/O, date handling, and user input.
+mysql-connector 
+
+jdk-22
 
 **Future Improvements**
 
 Implement a more robust database connection and management system.
 
 Add support for more advanced reporting.
+
+**System Set Up**
+
+**Download IntelliJ IDEA. **
+
+Download MySQL and MySQL command line. Follow the steps of SQL Database Creation.txt which is in sources.
+
+Open the zip for Zubillaga_Alejandro_DMS with IntelliJ IDEA or clone the repository.
