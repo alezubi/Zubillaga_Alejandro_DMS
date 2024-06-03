@@ -1,0 +1,28 @@
+SQL Database Creation 
+
+show databases; 
+use hr_db;
+
+if it does not exist create it
+
+CREATE DATABASE hr_db;
+
+create the table
+
+CREATE TABLE Employees (
+    ->     EmployeeID INT PRIMARY KEY,
+    ->     FirstName VARCHAR(50) NOT NULL,
+    ->     LastName VARCHAR(50) NOT NULL,
+    ->     Email VARCHAR(100) NOT NULL,
+    ->     DateOfBirth DATE NOT NULL,
+    ->     JobTitle VARCHAR(50) NOT NULL,
+    ->     Department VARCHAR(50) NOT NULL,
+    ->     HireDate DATE NOT NULL,
+    ->     Salary DECIMAL(10,2) NOT NULL,
+    ->     PhoneNumber VARCHAR(20) NOT NULL,
+    ->     Address VARCHAR(200) NOT NULL
+    -> );
+
+To see creation of your table please type
+
+describe employees;
