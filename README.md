@@ -91,8 +91,8 @@ To use the Employee Management System, run the Main class. The application will 
 
 The Employee Management System does not have any external dependencies. It uses the built-in Java libraries for file I/O, date handling, and user input.
 
-**Future Improvements
-**
+**Future Improvements**
+
 Implement a more robust database connection and management system.
 
 Add support for more advanced reporting.
