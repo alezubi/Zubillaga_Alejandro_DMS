@@ -1,11 +1,8 @@
-Employee Management System
-
+**Employee Management System**
 
 The Employee Management System is a Java-based application that allows users to manage employee data, including creating, retrieving, updating, and deleting employee records. The system also provides the ability to import employee data from a file and generate custom reports.
 
-
-Classes
-
+**Classes**
 
 The project consists of two main classes:
 
@@ -13,7 +10,7 @@ Employee
 
 EmployeeDAO
 
-Employee Class
+**Employee Class**
 
 The Employee class represents an employee and contains the following properties:
 
@@ -41,9 +38,7 @@ address: The address of the employee.
 
 The Employee class provides methods to get and set the values of these properties.
 
-
-EmployeeDAO Class
-
+**EmployeeDAO Class**
 
 The EmployeeDAO (Data Access Object) class is responsible for interacting with the HR database to perform CRUD (Create, Read, Update, Delete) operations on employee data. The class provides the following methods:
 
@@ -61,9 +56,7 @@ importEmployeesFromFile(String filePath): Imports employee data from a file and 
 
 generateCustomReport(String criteria): Generates a custom report based on the specified criteria.
 
-
-Main Class
-
+**Main Class**
 
 The Main class is the entry point of the Employee Management System. It provides the user interface and handles the user's interactions with the system. The Main class creates an instance of the EmployeeDAO class and calls the appropriate methods based on the user's selection from the menu.
 
@@ -86,8 +79,7 @@ importEmployeesFromFile(Scanner scanner): Prompts the user to enter a file path 
 
 generateCustomReport(Scanner scanner): Prompts the user to enter custom report criteria and generates the report.
 
-
-Usage
+**Usage**
 
 The main(String[] args) method is the entry point of the application. It creates a Scanner object to handle user input and enters a do-while loop to display the main menu and handle the user's selections.
 
@@ -95,14 +87,12 @@ The other methods in the Main class, such as createEmployee(), getEmployeeByID()
 
 To use the Employee Management System, run the Main class. The application will display the main menu, and the user can select the desired option by entering the corresponding number.
 
-
-Dependencies
+**Dependencies**
 
 The Employee Management System does not have any external dependencies. It uses the built-in Java libraries for file I/O, date handling, and user input.
 
-
-Future Improvements
-
+**Future Improvements
+**
 Implement a more robust database connection and management system.
 
 Add support for more advanced reporting.
