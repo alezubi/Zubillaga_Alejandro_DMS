@@ -11,6 +11,7 @@ import java.util.List;
  * Author: Alejandro Zubillaga
  * Course: 202430-CEN-3024C-31950
  * Date: Jun 1, 2024
+ * Software Development I
  *
  * EmployeeDAO Class
  * This class is responsible for interacting with the HR database to perform CRUD (Create, Read, Update, Delete) operations on employee data.
@@ -28,6 +29,7 @@ public class EmployeeDAO {
     /**
      * Constructor for the EmployeeDAO class.
      * Establishes a connection to the HR database using the provided URL, username, and password.
+     * This is a constructor, so it does not return anything (void)
      */
     public EmployeeDAO() {
         try {
@@ -39,8 +41,8 @@ public class EmployeeDAO {
     }
 
     /**
-     * Creates a new employee record in the database.
-     *
+     * createEmployee: Creates a new employee record in the database.
+     * This method does not return anything (void)
      * @param employee the Employee object containing the employee's information
      */
     public void createEmployee(Employee employee) {
@@ -63,8 +65,8 @@ public class EmployeeDAO {
         }
     }
     /**
-     * Retrieves an employee record from the database based on the employee's ID.
-     *
+     * getEmployeeByID: Retrieves an employee record from the database based on the employee's ID.
+     * This method returns an Employee object if a matching record is found in the database, or null if no record is found.
      * @param employeeID the unique identifier of the employee
      * @return the Employee object containing the employee's information, or null if the employee is not found
      */
@@ -96,8 +98,8 @@ public class EmployeeDAO {
     }
 
     /**
-     * Updates an existing employee record in the database.
-     *
+     * updateEmployee: Updates an existing employee record in the database.
+     * This method does not return anything (void)
      * @param employee the Employee object containing the updated employee information
      */
     public void updateEmployee(Employee employee) {
@@ -121,23 +123,47 @@ public class EmployeeDAO {
     }
 
     /**
-     * Deletes an employee record from the database based on the employee's ID.
-     *
+     * deleteEmployeeByID: Deletes an employee record from the database based on the employee's ID.
+     * This method does not return anything (void)
      * @param employeeID the unique identifier of the employee to be deleted
      */
-    public void deleteEmployee(int employeeID) {
+    public void deleteEmployeeByID(int employeeID) {
         String sql = "DELETE FROM Employees WHERE EmployeeID = ?";
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setInt(1, employeeID);
-            statement.executeUpdate();
+            int rowsAffected = statement.executeUpdate();
+            if (rowsAffected > 0) {
+                System.out.println("Employee deleted successfully.");
+            } else {
+                System.out.println("No employee found with the given ID.");
+            }
         } catch (SQLException e) {
-            e.printStackTrace();
+            System.out.println("Error deleting employee: " + e.getMessage());
+        }
+    }
+    /**
+     * deleteEmployeeByEmail: Deletes an employee record from the database based on the employee's ID.
+     * This method does not return anything (void)
+     * the unique identifier of the employee to be deleted
+     */
+    public void deleteEmployeeByEmail(String email) {
+        String sql = "DELETE FROM Employees WHERE Email = ?";
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setString(1, email);
+            int rowsAffected = statement.executeUpdate();
+            if (rowsAffected > 0) {
+                System.out.println("Employee deleted successfully.");
+            } else {
+                System.out.println("No employee found with the given email.");
+            }
+        } catch (SQLException e) {
+            System.out.println("Error deleting employee: " + e.getMessage());
         }
     }
 
     /**
-     * Retrieves a list of all employees from the database.
-     *
+     * getAllEmployees: Retrieves a list of all employees from the database.
+     * This method returns a List<Employee> containing all the employee records retrieved from the database.
      * @return a list of Employee objects containing all employee records
      */
     public List<Employee> getAllEmployees() {
@@ -168,8 +194,8 @@ public class EmployeeDAO {
     }
 
     /**
-     * Retrieves a list of employees based on the specified filter criteria.
-     *
+     * getEmployeesByFilter: Retrieves a list of employees based on the specified filter criteria.
+     * The method returns a List<Employee> containing the employee records that match the specified filter criteria. If no records are found, the method returns an empty list.
      * @param department the department to filter by (can be empty for no filter)
      * @param jobTitle the job title to filter by (can be empty for no filter)
      * @param minSalary the minimum salary to filter by (0 for no minimum)

@@ -3,6 +3,7 @@ import java.sql.Date;
  * Author: Alejandro Zubillaga
  * Course: 202430-CEN-3024C-31950
  * Date: Jun 1, 2024
+ * Software Development I
  *
  * Employee Class
  * This class represents an employee in the HR management system. It contains the employee's personal and employment information,

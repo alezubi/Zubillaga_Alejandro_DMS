@@ -9,6 +9,7 @@ import java.util.Scanner;
  * Author: Alejandro Zubillaga
  * Course: 202430-CEN-3024C-31950
  * Date: Jun 1, 2024
+ * Software Development I
  *
  * Main Class
  *
@@ -19,10 +20,14 @@ import java.util.Scanner;
 public class Main {
     private static final EmployeeDAO employeeDAO = new EmployeeDAO();
     /**
+     *
      * The main entry point of the Employee Management System.
      */
     public static void main(String[] args) {
 
+        /** main(String[] args) This method does not return anything (void).
+         *  This is an array of command-line arguments passed to the program when it is executed.
+         */
         Scanner scanner = new Scanner(System.in);
         int choice;
 
@@ -55,10 +60,11 @@ public class Main {
                     break;
                 case 8:
                     System.out.println("Exiting...");
+                    break;
                 default:
                     System.out.println("Invalid choice. Please try again.");
             }
-        } while (choice != 7);
+        } while (choice != 8);
 
 
 
@@ -66,6 +72,8 @@ public class Main {
 
     /**
      * Displays the main menu of the Employee Management System.
+     * displayMenu(): This method displays the main menu of the Employee Management System, showing the available options.
+     * This method does not take any arguments.
      */
     private static void displayMenu() {
         System.out.println("Employee Management System");
@@ -82,8 +90,9 @@ public class Main {
 
     /**
      * Imports employee data from a file and adds the employees to the HR database.
-     *
+     * importEmployeesFromFile(Scanner scanner): This method allows the user to import employee data from a file and add the employees to the HR database.
      * @param scanner the Scanner object used to read user input
+     * This method does not return anything (void).
      */
     private static void importEmployeesFromFile(Scanner scanner) {
         System.out.print("Enter the file path: ");
@@ -125,8 +134,9 @@ public class Main {
 
     /**
      * Creates a new employee record in the HR database.
-     *
+     * createEmployee(Scanner scanner): This method prompts the user to enter employee details and creates a new employee record in the HR database.
      * @param scanner the Scanner object used to read user input
+     * This method does not return anything (void).
      */
     private static void createEmployee(Scanner scanner) {
         System.out.print("Enter Employee ID: ");
@@ -173,8 +183,9 @@ public class Main {
 
     /**
      * Retrieves an employee record from the HR database based on the employee's ID.
-     *
+     * getEmployeeByID(Scanner scanner): This method prompts the user to enter an employee ID and retrieves the corresponding employee record from the HR database.
      * @param scanner the Scanner object used to read user input
+     * This method does not return anything (void). It prints the employee details to the console.
      */
     private static void getEmployeeByID(Scanner scanner) {
         System.out.print("Enter Employee ID: ");
@@ -202,8 +213,9 @@ public class Main {
 
     /**
      * Updates an existing employee record in the HR database.
-     *
+     * updateEmployee(Scanner scanner): This method allows the user to update an existing employee record in the HR database.
      * @param scanner the Scanner object used to read user input
+     * This method does not return anything (void).
      */
     private static void updateEmployee(Scanner scanner) {
         System.out.print("Enter Employee ID: ");
@@ -265,20 +277,42 @@ public class Main {
 
     /**
      * Deletes an employee record from the HR database based on the employee's ID.
-     *
+     * deleteEmployee(Scanner scanner): This method allows the user to delete an employee record from the HR database.
      * @param scanner the Scanner object used to read user input
+     * This method does not return anything (void).
      */
     private static void deleteEmployee(Scanner scanner) {
-        System.out.print("Enter Employee ID: ");
-        int employeeID = scanner.nextInt();
+        System.out.println("Delete Employee");
+        System.out.println("1. Delete by Employee ID");
+        System.out.println("2. Delete by Email");
+        System.out.print("Enter your choice (1 or 2): ");
+        int choice = scanner.nextInt();
         scanner.nextLine(); // Consume newline character
 
-        employeeDAO.deleteEmployee(employeeID);
-        System.out.println("Employee deleted successfully.");
+        switch (choice) {
+            case 1:
+                System.out.print("Enter Employee ID: ");
+                int employeeID = scanner.nextInt();
+                scanner.nextLine(); // Consume newline character
+                employeeDAO.deleteEmployeeByID(employeeID);
+                System.out.println("Employee deleted successfully.");
+                break;
+            case 2:
+                System.out.print("Enter Employee Email: ");
+                String email = scanner.nextLine();
+                employeeDAO.deleteEmployeeByEmail(email);
+                System.out.println("Employee deleted successfully.");
+                break;
+            default:
+                System.out.println("Invalid choice. Please try again.");
+                break;
+        }
     }
 
     /**
      * Retrieves a list of all employees from the HR database and displays their information.
+     * getAllEmployees(): This method retrieves and displays all the employee records from the HR database.
+     * This method does not return anything (void). It prints all the employee records to the console.
      */
     private static void getAllEmployees() {
         List<Employee> employees = employeeDAO.getAllEmployees();
@@ -305,8 +339,9 @@ public class Main {
 
     /**
      * Generates a custom report based on user-specified criteria.
-     *
+     * generateCustomReport(Scanner scanner): This method allows the user to generate a custom report based on specific criteria.
      * @param scanner the Scanner object used to read user input
+     * This method does not return anything (void). It generates and displays the custom report.
      */
     private static void generateCustomReport(Scanner scanner) {
         System.out.println("Generate Custom Report");
