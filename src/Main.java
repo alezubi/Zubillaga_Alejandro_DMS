@@ -5,11 +5,22 @@ import java.sql.Date;
 import java.util.List;
 import java.util.Scanner;
 
-//TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
-// click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
+/**
+ * Author: Alejandro Zubillaga
+ * Course: 202430-CEN-3024C-31950
+ * Date: Jun 1, 2024
+ *
+ * Main Class
+ *
+ * This is the main class of the Employee Management System. It provides the user interface and handles the user's interactions with the system.
+ * The main class creates an instance of the EmployeeDAO class, which is responsible for interacting with the HR database to perform CRUD operations on employee data.
+ * The main class displays a menu of options to the user, and calls the appropriate methods in the EmployeeDAO class based on the user's selection.
+ */
 public class Main {
     private static final EmployeeDAO employeeDAO = new EmployeeDAO();
-
+    /**
+     * The main entry point of the Employee Management System.
+     */
     public static void main(String[] args) {
 
         Scanner scanner = new Scanner(System.in);
@@ -40,8 +51,10 @@ public class Main {
                     importEmployeesFromFile(scanner);
                     break;
                 case 7:
-                    System.out.println("Exiting...");
+                    generateCustomReport(scanner);
                     break;
+                case 8:
+                    System.out.println("Exiting...");
                 default:
                     System.out.println("Invalid choice. Please try again.");
             }
@@ -51,6 +64,9 @@ public class Main {
 
     }
 
+    /**
+     * Displays the main menu of the Employee Management System.
+     */
     private static void displayMenu() {
         System.out.println("Employee Management System");
         System.out.println("1. Create Employee");
@@ -59,10 +75,16 @@ public class Main {
         System.out.println("4. Delete Employee");
         System.out.println("5. Get All Employees");
         System.out.println("6. Import Employees from File");
-        System.out.println("7. Exit");
+        System.out.println("7. Generate Custom Report");
+        System.out.println("8. Exit");
         System.out.print("Enter your choice: ");
     }
 
+    /**
+     * Imports employee data from a file and adds the employees to the HR database.
+     *
+     * @param scanner the Scanner object used to read user input
+     */
     private static void importEmployeesFromFile(Scanner scanner) {
         System.out.print("Enter the file path: ");
         String filePath = scanner.nextLine();
@@ -101,6 +123,11 @@ public class Main {
         }
     }
 
+    /**
+     * Creates a new employee record in the HR database.
+     *
+     * @param scanner the Scanner object used to read user input
+     */
     private static void createEmployee(Scanner scanner) {
         System.out.print("Enter Employee ID: ");
         int employeeID = scanner.nextInt();
@@ -144,6 +171,11 @@ public class Main {
         System.out.println("Employee created successfully.");
     }
 
+    /**
+     * Retrieves an employee record from the HR database based on the employee's ID.
+     *
+     * @param scanner the Scanner object used to read user input
+     */
     private static void getEmployeeByID(Scanner scanner) {
         System.out.print("Enter Employee ID: ");
         int employeeID = scanner.nextInt();
@@ -167,6 +199,12 @@ public class Main {
             System.out.println("Employee not found.");
         }
     }
+
+    /**
+     * Updates an existing employee record in the HR database.
+     *
+     * @param scanner the Scanner object used to read user input
+     */
     private static void updateEmployee(Scanner scanner) {
         System.out.print("Enter Employee ID: ");
         int employeeID = scanner.nextInt();
@@ -225,6 +263,11 @@ public class Main {
         }
     }
 
+    /**
+     * Deletes an employee record from the HR database based on the employee's ID.
+     *
+     * @param scanner the Scanner object used to read user input
+     */
     private static void deleteEmployee(Scanner scanner) {
         System.out.print("Enter Employee ID: ");
         int employeeID = scanner.nextInt();
@@ -234,6 +277,9 @@ public class Main {
         System.out.println("Employee deleted successfully.");
     }
 
+    /**
+     * Retrieves a list of all employees from the HR database and displays their information.
+     */
     private static void getAllEmployees() {
         List<Employee> employees = employeeDAO.getAllEmployees();
         if (employees.isEmpty()) {
@@ -257,5 +303,38 @@ public class Main {
         }
     }
 
+    /**
+     * Generates a custom report based on user-specified criteria.
+     *
+     * @param scanner the Scanner object used to read user input
+     */
+    private static void generateCustomReport(Scanner scanner) {
+        System.out.println("Generate Custom Report");
+        System.out.print("Enter department (or leave blank for all): ");
+        String department = scanner.nextLine();
+
+        System.out.print("Enter job title (or leave blank for all): ");
+        String jobTitle = scanner.nextLine();
+
+        System.out.print("Enter minimum salary (or leave blank for no minimum): ");
+        String minSalaryStr = scanner.nextLine();
+        double minSalary = minSalaryStr.isEmpty() ? 0 : Double.parseDouble(minSalaryStr);
+
+        System.out.print("Enter maximum salary (or leave blank for no maximum): ");
+        String maxSalaryStr = scanner.nextLine();
+        double maxSalary = maxSalaryStr.isEmpty() ? Double.MAX_VALUE : Double.parseDouble(maxSalaryStr);
+
+        List<Employee> filteredEmployees = employeeDAO.getEmployeesByFilter(department, jobTitle, minSalary, maxSalary);
+
+        System.out.println("Custom Report:");
+        System.out.println("Department\tJob Title\tFirst Name\tLast Name\tSalary");
+        System.out.println("-----------------------------------------------------------");
+        for (Employee employee : filteredEmployees) {
+            System.out.printf("%s\t%s\t%s\t%s\t$%.2f%n",
+                    employee.getDepartment(), employee.getJobTitle(),
+                    employee.getFirstName(), employee.getLastName(),
+                    employee.getSalary());
+        }
+    }
 }
 

@@ -7,6 +7,17 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Author: Alejandro Zubillaga
+ * Course: 202430-CEN-3024C-31950
+ * Date: Jun 1, 2024
+ *
+ * EmployeeDAO Class
+ * This class is responsible for interacting with the HR database to perform CRUD (Create, Read, Update, Delete) operations on employee data.
+ * It establishes a connection to the MySQL database, and provides methods to create, retrieve, update, and delete employee records.
+ * The EmployeeDAO class is used by the main application to manage employee information.
+ */
+
 public class EmployeeDAO {
     private static final String DB_URL = "jdbc:mysql://localhost:3306/hr_db";
     private static final String DB_USER = "root";
@@ -14,6 +25,10 @@ public class EmployeeDAO {
 
     private Connection connection;
 
+    /**
+     * Constructor for the EmployeeDAO class.
+     * Establishes a connection to the HR database using the provided URL, username, and password.
+     */
     public EmployeeDAO() {
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
@@ -23,6 +38,11 @@ public class EmployeeDAO {
         }
     }
 
+    /**
+     * Creates a new employee record in the database.
+     *
+     * @param employee the Employee object containing the employee's information
+     */
     public void createEmployee(Employee employee) {
         String sql = "INSERT INTO Employees (EmployeeID, FirstName, LastName, Email, DateOfBirth, JobTitle, Department, HireDate, Salary, PhoneNumber, Address) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
@@ -42,7 +62,12 @@ public class EmployeeDAO {
             e.printStackTrace();
         }
     }
-
+    /**
+     * Retrieves an employee record from the database based on the employee's ID.
+     *
+     * @param employeeID the unique identifier of the employee
+     * @return the Employee object containing the employee's information, or null if the employee is not found
+     */
     public Employee getEmployeeByID(int employeeID) {
         String sql = "SELECT * FROM Employees WHERE EmployeeID = ?";
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
@@ -70,6 +95,11 @@ public class EmployeeDAO {
         return null;
     }
 
+    /**
+     * Updates an existing employee record in the database.
+     *
+     * @param employee the Employee object containing the updated employee information
+     */
     public void updateEmployee(Employee employee) {
         String sql = "UPDATE Employees SET FirstName = ?, LastName = ?, Email = ?, DateOfBirth = ?, JobTitle = ?, Department = ?, HireDate = ?, Salary = ?, PhoneNumber = ?, Address = ? WHERE EmployeeID = ?";
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
@@ -90,6 +120,11 @@ public class EmployeeDAO {
         }
     }
 
+    /**
+     * Deletes an employee record from the database based on the employee's ID.
+     *
+     * @param employeeID the unique identifier of the employee to be deleted
+     */
     public void deleteEmployee(int employeeID) {
         String sql = "DELETE FROM Employees WHERE EmployeeID = ?";
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
@@ -100,6 +135,11 @@ public class EmployeeDAO {
         }
     }
 
+    /**
+     * Retrieves a list of all employees from the database.
+     *
+     * @return a list of Employee objects containing all employee records
+     */
     public List<Employee> getAllEmployees() {
         List<Employee> employees = new ArrayList<>();
         String sql = "SELECT * FROM Employees";
@@ -126,5 +166,61 @@ public class EmployeeDAO {
         }
         return employees;
     }
-}
 
+    /**
+     * Retrieves a list of employees based on the specified filter criteria.
+     *
+     * @param department the department to filter by (can be empty for no filter)
+     * @param jobTitle the job title to filter by (can be empty for no filter)
+     * @param minSalary the minimum salary to filter by (0 for no minimum)
+     * @param maxSalary the maximum salary to filter by (Double.MAX_VALUE for no maximum)
+     * @return a list of Employee objects that match the specified filter criteria
+     */
+    public List<Employee> getEmployeesByFilter(String department, String jobTitle, double minSalary, double maxSalary) {
+        List<Employee> filteredEmployees = new ArrayList<>();
+        String sql = "SELECT * FROM Employees WHERE 1 = 1";
+
+        if (!department.isEmpty()) {
+            sql += " AND Department = ?";
+        }
+
+        if (!jobTitle.isEmpty()) {
+            sql += " AND JobTitle = ?";
+        }
+
+        sql += " AND Salary BETWEEN ? AND ?";
+
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            int paramIndex = 1;
+            if (!department.isEmpty()) {
+                statement.setString(paramIndex++, department);
+            }
+            if (!jobTitle.isEmpty()) {
+                statement.setString(paramIndex++, jobTitle);
+            }
+            statement.setDouble(paramIndex++, minSalary);
+            statement.setDouble(paramIndex, maxSalary);
+            try (ResultSet resultSet = statement.executeQuery()) {
+                while (resultSet.next()) {
+                    Employee employee = new Employee(
+                            resultSet.getInt("EmployeeID"),
+                            resultSet.getString("FirstName"),
+                            resultSet.getString("LastName"),
+                            resultSet.getString("Email"),
+                            resultSet.getString("DateOfBirth"),
+                            resultSet.getString("JobTitle"),
+                            resultSet.getString("Department"),
+                            resultSet.getString("HireDate"),
+                            resultSet.getDouble("Salary"),
+                            resultSet.getString("PhoneNumber"),
+                            resultSet.getString("Address")
+                    );
+                    filteredEmployees.add(employee);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return filteredEmployees;
+    }
+}
