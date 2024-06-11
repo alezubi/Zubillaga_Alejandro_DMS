@@ -139,42 +139,156 @@ public class Main {
      * This method does not return anything (void).
      */
     private static void createEmployee(Scanner scanner) {
-        System.out.print("Enter Employee ID: ");
-        int employeeID = scanner.nextInt();
-        scanner.nextLine(); // Consume newline character
+        int employeeID;
+        while (true) {
+            System.out.print("Enter Employee ID: ");
+            if (scanner.hasNextInt()) {
+                employeeID = scanner.nextInt();
+                scanner.nextLine(); // Consume newline character
+                break;
+            } else {
+                System.out.println("Invalid input. Please enter a valid integer.");
+                scanner.nextLine(); // Consume invalid input
+            }
+        }
 
-        System.out.print("Enter First Name: ");
-        String firstName = scanner.nextLine();
+        String firstName;
+        while (true) {
+            System.out.print("Enter First Name: ");
+            if (scanner.hasNextLine()) {
+                firstName = scanner.nextLine();
+                if (!firstName.trim().isEmpty()) {
+                    break;
+                } else {
+                    System.out.println("First name cannot be empty.");
+                }
+            }
+        }
 
-        System.out.print("Enter Last Name: ");
-        String lastName = scanner.nextLine();
+        String lastName;
+        while (true) {
+            System.out.print("Enter Last Name: ");
+            if (scanner.hasNextLine()) {
+                lastName = scanner.nextLine();
+                if (!lastName.trim().isEmpty()) {
+                    break;
+                } else {
+                    System.out.println("Last name cannot be empty.");
+                }
+            }
+        }
 
-        System.out.print("Enter Email: ");
-        String email = scanner.nextLine();
+        String email;
+        while (true) {
+            System.out.print("Enter Email: ");
+            if (scanner.hasNextLine()) {
+                email = scanner.nextLine();
+                if (!email.trim().isEmpty() && email.contains("@")) {
+                    break;
+                } else {
+                    System.out.println("Invalid email. Please enter a valid email address.");
+                }
+            }
+        }
 
-        System.out.print("Enter Date of Birth (yyyy-MM-dd): ");
-        String dateOfBirthStr = scanner.nextLine();
+        String dateOfBirthStr;
+        while (true) {
+            System.out.print("Enter Date of Birth (yyyy-MM-dd): ");
+            if (scanner.hasNextLine()) {
+                dateOfBirthStr = scanner.nextLine();
+                try {
+                    Date.valueOf(dateOfBirthStr);
+                    break;
+                } catch (IllegalArgumentException e) {
+                    System.out.println("Invalid date format. Please enter a valid date in yyyy-MM-dd format.");
+                }
+            }
+        }
         String dateOfBirth = String.valueOf(Date.valueOf(dateOfBirthStr));
 
-        System.out.print("Enter Job Title: ");
-        String jobTitle = scanner.nextLine();
+        String jobTitle;
+        while (true) {
+            System.out.print("Enter Job Title: ");
+            if (scanner.hasNextLine()) {
+                jobTitle = scanner.nextLine();
+                if (!jobTitle.trim().isEmpty()) {
+                    break;
+                } else {
+                    System.out.println("Job title cannot be empty.");
+                }
+            }
+        }
 
-        System.out.print("Enter Department: ");
-        String department = scanner.nextLine();
+        String department;
+        while (true) {
+            System.out.print("Enter Department: ");
+            if (scanner.hasNextLine()) {
+                department = scanner.nextLine();
+                if (!department.trim().isEmpty()) {
+                    break;
+                } else {
+                    System.out.println("Department cannot be empty.");
+                }
+            }
+        }
 
-        System.out.print("Enter Hire Date (yyyy-MM-dd): ");
-        String hireDateStr = scanner.nextLine();
+        String hireDateStr;
+        while (true) {
+            System.out.print("Enter Hire Date (yyyy-MM-dd): ");
+            if (scanner.hasNextLine()) {
+                hireDateStr = scanner.nextLine();
+                try {
+                    Date.valueOf(hireDateStr);
+                    break;
+                } catch (IllegalArgumentException e) {
+                    System.out.println("Invalid date format. Please enter a valid date in yyyy-MM-dd format.");
+                }
+            }
+        }
         String hireDate = String.valueOf(Date.valueOf(hireDateStr));
 
-        System.out.print("Enter Salary: ");
-        double salary = scanner.nextDouble();
-        scanner.nextLine(); // Consume newline character
+        double salary;
+        while (true) {
+            System.out.print("Enter Salary: ");
+            if (scanner.hasNextDouble()) {
+                salary = scanner.nextDouble();
+                scanner.nextLine(); // Consume newline character
+                if (salary > 0) {
+                    break;
+                } else {
+                    System.out.println("Salary must be a positive number.");
+                }
+            } else {
+                System.out.println("Invalid input. Please enter a valid salary.");
+                scanner.nextLine(); // Consume invalid input
+            }
+        }
 
-        System.out.print("Enter Phone Number: ");
-        String phoneNumber = scanner.nextLine();
+        String phoneNumber;
+        while (true) {
+            System.out.print("Enter Phone Number: ");
+            if (scanner.hasNextLine()) {
+                phoneNumber = scanner.nextLine();
+                if (!phoneNumber.trim().isEmpty()) {
+                    break;
+                } else {
+                    System.out.println("Phone number cannot be empty.");
+                }
+            }
+        }
 
-        System.out.print("Enter Address: ");
-        String address = scanner.nextLine();
+        String address;
+        while (true) {
+            System.out.print("Enter Address: ");
+            if (scanner.hasNextLine()) {
+                address = scanner.nextLine();
+                if (!address.trim().isEmpty()) {
+                    break;
+                } else {
+                    System.out.println("Address cannot be empty.");
+                }
+            }
+        }
 
         Employee employee = new Employee(employeeID, firstName, lastName, email, dateOfBirth, jobTitle, department, hireDate, salary, phoneNumber, address);
         employeeDAO.createEmployee(employee);
@@ -188,9 +302,18 @@ public class Main {
      * This method does not return anything (void). It prints the employee details to the console.
      */
     private static void getEmployeeByID(Scanner scanner) {
-        System.out.print("Enter Employee ID: ");
-        int employeeID = scanner.nextInt();
-        scanner.nextLine(); // Consume newline character
+        int employeeID;
+        while (true) {
+            System.out.print("Enter Employee ID: ");
+            if (scanner.hasNextInt()) {
+                employeeID = scanner.nextInt();
+                scanner.nextLine(); // Consume newline character
+                break;
+            } else {
+                System.out.println("Invalid input. Please enter a valid integer.");
+                scanner.nextLine(); // Consume invalid input
+            }
+        }
 
         Employee employee = employeeDAO.getEmployeeByID(employeeID);
         if (employee != null) {
@@ -218,44 +341,158 @@ public class Main {
      * This method does not return anything (void).
      */
     private static void updateEmployee(Scanner scanner) {
-        System.out.print("Enter Employee ID: ");
-        int employeeID = scanner.nextInt();
-        scanner.nextLine(); // Consume newline character
+        int employeeID;
+        while (true) {
+            System.out.print("Enter Employee ID: ");
+            if (scanner.hasNextInt()) {
+                employeeID = scanner.nextInt();
+                scanner.nextLine(); // Consume newline character
+                break;
+            } else {
+                System.out.println("Invalid input. Please enter a valid integer.");
+                scanner.nextLine(); // Consume invalid input
+            }
+        }
 
         Employee employee = employeeDAO.getEmployeeByID(employeeID);
         if (employee != null) {
-            System.out.print("Enter First Name: ");
-            String firstName = scanner.nextLine();
+            String firstName;
+            while (true) {
+                System.out.print("Enter First Name: ");
+                if (scanner.hasNextLine()) {
+                    firstName = scanner.nextLine();
+                    if (!firstName.trim().isEmpty()) {
+                        break;
+                    } else {
+                        System.out.println("First name cannot be empty.");
+                    }
+                }
+            }
 
-            System.out.print("Enter Last Name: ");
-            String lastName = scanner.nextLine();
+            String lastName;
+            while (true) {
+                System.out.print("Enter Last Name: ");
+                if (scanner.hasNextLine()) {
+                    lastName = scanner.nextLine();
+                    if (!lastName.trim().isEmpty()) {
+                        break;
+                    } else {
+                        System.out.println("Last name cannot be empty.");
+                    }
+                }
+            }
 
-            System.out.print("Enter Email: ");
-            String email = scanner.nextLine();
+            String email;
+            while (true) {
+                System.out.print("Enter Email: ");
+                if (scanner.hasNextLine()) {
+                    email = scanner.nextLine();
+                    if (!email.trim().isEmpty() && email.contains("@")) {
+                        break;
+                    } else {
+                        System.out.println("Invalid email. Please enter a valid email address.");
+                    }
+                }
+            }
 
-            System.out.print("Enter Date of Birth (yyyy-MM-dd): ");
-            String dateOfBirthStr = scanner.nextLine();
+            String dateOfBirthStr;
+            while (true) {
+                System.out.print("Enter Date of Birth (yyyy-MM-dd): ");
+                if (scanner.hasNextLine()) {
+                    dateOfBirthStr = scanner.nextLine();
+                    try {
+                        Date.valueOf(dateOfBirthStr);
+                        break;
+                    } catch (IllegalArgumentException e) {
+                        System.out.println("Invalid date format. Please enter a valid date in yyyy-MM-dd format.");
+                    }
+                }
+            }
             Date dateOfBirth = Date.valueOf(dateOfBirthStr);
 
-            System.out.print("Enter Job Title: ");
-            String jobTitle = scanner.nextLine();
+            String jobTitle;
+            while (true) {
+                System.out.print("Enter Job Title: ");
+                if (scanner.hasNextLine()) {
+                    jobTitle = scanner.nextLine();
+                    if (!jobTitle.trim().isEmpty()) {
+                        break;
+                    } else {
+                        System.out.println("Job title cannot be empty.");
+                    }
+                }
+            }
 
-            System.out.print("Enter Department: ");
-            String department = scanner.nextLine();
+            String department;
+            while (true) {
+                System.out.print("Enter Department: ");
+                if (scanner.hasNextLine()) {
+                    department = scanner.nextLine();
+                    if (!department.trim().isEmpty()) {
+                        break;
+                    } else {
+                        System.out.println("Department cannot be empty.");
+                    }
+                }
+            }
 
-            System.out.print("Enter Hire Date (yyyy-MM-dd): ");
-            String hireDateStr = scanner.nextLine();
+            String hireDateStr;
+            while (true) {
+                System.out.print("Enter Hire Date (yyyy-MM-dd): ");
+                if (scanner.hasNextLine()) {
+                    hireDateStr = scanner.nextLine();
+                    try {
+                        Date.valueOf(hireDateStr);
+                        break;
+                    } catch (IllegalArgumentException e) {
+                        System.out.println("Invalid date format. Please enter a valid date in yyyy-MM-dd format.");
+                    }
+                }
+            }
             Date hireDate = Date.valueOf(hireDateStr);
 
-            System.out.print("Enter Salary: ");
-            double salary = scanner.nextDouble();
-            scanner.nextLine(); // Consume newline character
+            double salary;
+            while (true) {
+                System.out.print("Enter Salary: ");
+                if (scanner.hasNextDouble()) {
+                    salary = scanner.nextDouble();
+                    scanner.nextLine(); // Consume newline character
+                    if (salary > 0) {
+                        break;
+                    } else {
+                        System.out.println("Salary must be a positive number.");
+                    }
+                } else {
+                    System.out.println("Invalid input. Please enter a valid salary.");
+                    scanner.nextLine(); // Consume invalid input
+                }
+            }
 
-            System.out.print("Enter Phone Number: ");
-            String phoneNumber = scanner.nextLine();
+            String phoneNumber;
+            while (true) {
+                System.out.print("Enter Phone Number: ");
+                if (scanner.hasNextLine()) {
+                    phoneNumber = scanner.nextLine();
+                    if (!phoneNumber.trim().isEmpty()) {
+                        break;
+                    } else {
+                        System.out.println("Phone number cannot be empty.");
+                    }
+                }
+            }
 
-            System.out.print("Enter Address: ");
-            String address = scanner.nextLine();
+            String address;
+            while (true) {
+                System.out.print("Enter Address: ");
+                if (scanner.hasNextLine()) {
+                    address = scanner.nextLine();
+                    if (!address.trim().isEmpty()) {
+                        break;
+                    } else {
+                        System.out.println("Address cannot be empty.");
+                    }
+                }
+            }
 
             employee.setFirstName(firstName);
             employee.setLastName(lastName);
@@ -285,26 +522,55 @@ public class Main {
         System.out.println("Delete Employee");
         System.out.println("1. Delete by Employee ID");
         System.out.println("2. Delete by Email");
-        System.out.print("Enter your choice (1 or 2): ");
-        int choice = scanner.nextInt();
-        scanner.nextLine(); // Consume newline character
+        int choice;
+        while (true) {
+            System.out.print("Enter your choice (1 or 2): ");
+            if (scanner.hasNextInt()) {
+                choice = scanner.nextInt();
+                scanner.nextLine(); // Consume newline character
+                if (choice == 1 || choice == 2) {
+                    break;
+                } else {
+                    System.out.println("Invalid choice. Please try again.");
+                }
+            } else {
+                System.out.println("Invalid input. Please enter a valid integer.");
+                scanner.nextLine(); // Consume invalid input
+            }
+        }
 
         switch (choice) {
             case 1:
-                System.out.print("Enter Employee ID: ");
-                int employeeID = scanner.nextInt();
-                scanner.nextLine(); // Consume newline character
+                int employeeID;
+                while (true) {
+                    System.out.print("Enter Employee ID: ");
+                    if (scanner.hasNextInt()) {
+                        employeeID = scanner.nextInt();
+                        scanner.nextLine(); // Consume newline character
+                        break;
+                    } else {
+                        System.out.println("Invalid input. Please enter a valid integer.");
+                        scanner.nextLine(); // Consume invalid input
+                    }
+                }
                 employeeDAO.deleteEmployeeByID(employeeID);
                 System.out.println("Employee deleted successfully.");
                 break;
             case 2:
-                System.out.print("Enter Employee Email: ");
-                String email = scanner.nextLine();
+                String email;
+                while (true) {
+                    System.out.print("Enter Employee Email: ");
+                    if (scanner.hasNextLine()) {
+                        email = scanner.nextLine();
+                        if (!email.trim().isEmpty() && email.contains("@")) {
+                            break;
+                        } else {
+                            System.out.println("Invalid email. Please enter a valid email address.");
+                        }
+                    }
+                }
                 employeeDAO.deleteEmployeeByEmail(email);
                 System.out.println("Employee deleted successfully.");
-                break;
-            default:
-                System.out.println("Invalid choice. Please try again.");
                 break;
         }
     }
@@ -353,11 +619,28 @@ public class Main {
 
         System.out.print("Enter minimum salary (or leave blank for no minimum): ");
         String minSalaryStr = scanner.nextLine();
-        double minSalary = minSalaryStr.isEmpty() ? 0 : Double.parseDouble(minSalaryStr);
+        double minSalary;
+        try {
+            minSalary = minSalaryStr.isEmpty() ? 0 : Double.parseDouble(minSalaryStr);
+        } catch (NumberFormatException e) {
+            System.out.println("Invalid minimum salary. Please enter a valid number.");
+            return;
+        }
 
         System.out.print("Enter maximum salary (or leave blank for no maximum): ");
         String maxSalaryStr = scanner.nextLine();
-        double maxSalary = maxSalaryStr.isEmpty() ? Double.MAX_VALUE : Double.parseDouble(maxSalaryStr);
+        double maxSalary;
+        try {
+            maxSalary = maxSalaryStr.isEmpty() ? Double.MAX_VALUE : Double.parseDouble(maxSalaryStr);
+        } catch (NumberFormatException e) {
+            System.out.println("Invalid maximum salary. Please enter a valid number.");
+            return;
+        }
+
+        if (minSalary > maxSalary) {
+            System.out.println("Minimum salary cannot be greater than maximum salary.");
+            return;
+        }
 
         List<Employee> filteredEmployees = employeeDAO.getEmployeesByFilter(department, jobTitle, minSalary, maxSalary);
 
