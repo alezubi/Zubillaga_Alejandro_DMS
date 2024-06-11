@@ -129,18 +129,56 @@ public class EmployeeDAOTest {
     }
 
     @Test
-    public void testGetAllEmployees() {
-        Employee employee1 = new Employee(1, "John", "Doe", "john.doe@example.com", String.valueOf(LocalDate.of(1980, 1, 1)), "Software Engineer", "Engineering", String.valueOf(LocalDate.of(2020, 1, 1)), 50000, "555-1234", "123 Main St.");
-        employeeDAO.createEmployee(employee1);
+    public void testGetEmployeesByFilter() {
+        // Create some employees
+        employeeDAO.createEmployee(new Employee(1, "John", "Doe", "john.doe@example.com", "1980-01-01", "Software Engineer", "Engineering", "2020-01-01", 50000, "555-1234", "123 Main St."));
+        employeeDAO.createEmployee(new Employee(2, "Jane", "Doe", "jane.doe@example.com", "1985-05-15", "Software Engineer", "Engineering", "2021-02-14", 60000, "555-5678", "456 Elm St."));
 
+        // Test filtering by department
+        List<Employee> engineeringEmployees = employeeDAO.getEmployeesByFilter("Engineering", "", 0, Double.MAX_VALUE);
+        assertEquals(2, engineeringEmployees.size());
+        assertTrue(engineeringEmployees.stream().allMatch(e -> e.getDepartment().equals("Engineering")));
+
+        // Test filtering by job title
+        List<Employee> softwareEngineerEmployees = employeeDAO.getEmployeesByFilter("", "Software Engineer", 0, Double.MAX_VALUE);
+        assertEquals(2, softwareEngineerEmployees.size());
+        assertTrue(softwareEngineerEmployees.stream().allMatch(e -> e.getJobTitle().equals("Software Engineer")));
+
+        // Test filtering by salary range
+        List<Employee> highSalaryEmployees = employeeDAO.getEmployeesByFilter("", "", 55000, Double.MAX_VALUE);
+        assertEquals(1, highSalaryEmployees.size());
+        assertTrue(highSalaryEmployees.stream().allMatch(e -> e.getSalary() >= 55000));
+
+        // Test filtering by multiple criteria
+        List<Employee> engineeringSoftwareEmployees = employeeDAO.getEmployeesByFilter("Engineering", "Software Engineer", 0, Double.MAX_VALUE);
+        assertEquals(2, engineeringSoftwareEmployees.size());
+        assertTrue(engineeringSoftwareEmployees.stream().allMatch(e -> e.getDepartment().equals("Engineering") && e.getJobTitle().equals("Software Engineer")));
+    }
+
+
+    @Test
+    public void testGetAllEmployees() {
+        // Create some employees
+        Employee employee1 = new Employee(1, "John", "Doe", "john.doe@example.com", String.valueOf(LocalDate.of(1980, 1, 1)), "Software Engineer", "Engineering", String.valueOf(LocalDate.of(2020, 1, 1)), 50000, "555-1234", "123 Main St.");
         Employee employee2 = new Employee(2, "Jane", "Doe", "jane.doe@example.com", String.valueOf(LocalDate.of(1985, 5, 15)), "Software Engineer", "Engineering", String.valueOf(LocalDate.of(2021, 2, 14)), 60000, "555-5678", "456 Elm St.");
+
+        // Create the employees
+        employeeDAO.createEmployee(employee1);
         employeeDAO.createEmployee(employee2);
 
-        List<Employee> employees = employeeDAO.getAllEmployees();
-        assertEquals(2, employees.size());
+        // Get all employees
+        List<Employee> allEmployees = employeeDAO.getAllEmployees();
 
-        Employee retrievedEmployee1 = employees.get(0);
-        assertEquals(employee1.getEmployeeID(), retrievedEmployee1.getEmployeeID());
+        // Verify that the list contains the two employees
+        assertNotNull(allEmployees);
+        assertEquals(2, allEmployees.size());
+
+        // Verify the employee details
+        Employee retrievedEmployee1 = allEmployees.stream()
+                .filter(e -> e.getEmployeeID() == 1)
+                .findFirst()
+                .orElse(null);
+        assertNotNull(retrievedEmployee1);
         assertEquals(employee1.getFirstName(), retrievedEmployee1.getFirstName());
         assertEquals(employee1.getLastName(), retrievedEmployee1.getLastName());
         assertEquals(employee1.getEmail(), retrievedEmployee1.getEmail());
@@ -152,8 +190,11 @@ public class EmployeeDAOTest {
         assertEquals(employee1.getPhoneNumber(), retrievedEmployee1.getPhoneNumber());
         assertEquals(employee1.getAddress(), retrievedEmployee1.getAddress());
 
-        Employee retrievedEmployee2 = employees.get(1);
-        assertEquals(employee2.getEmployeeID(), retrievedEmployee2.getEmployeeID());
+        Employee retrievedEmployee2 = allEmployees.stream()
+                .filter(e -> e.getEmployeeID() == 2)
+                .findFirst()
+                .orElse(null);
+        assertNotNull(retrievedEmployee2);
         assertEquals(employee2.getFirstName(), retrievedEmployee2.getFirstName());
         assertEquals(employee2.getLastName(), retrievedEmployee2.getLastName());
         assertEquals(employee2.getEmail(), retrievedEmployee2.getEmail());
@@ -166,6 +207,8 @@ public class EmployeeDAOTest {
         assertEquals(employee2.getAddress(), retrievedEmployee2.getAddress());
     }
 
-
-
 }
+
+
+
+
