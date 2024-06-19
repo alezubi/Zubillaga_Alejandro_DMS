@@ -106,3 +106,12 @@ Add support for more advanced reporting.
 Download MySQL and MySQL command line. Follow the steps of SQL Database Creation.txt which is in sources.
 
 Open the zip for Zubillaga_Alejandro_DMS with IntelliJ IDEA or clone the repository.
+
+**GUI Integration**
+
+Go to file -> setting -> plugins -> JFormDesigner. This is used for the GUI Integration.
+
+**MySQL**
+
+Download MySQL Command Line and MySQL Community. After that follow the steps in the SQL Data Creation.txt. 
+
