@@ -1,3 +1,4 @@
+import javax.swing.*;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
@@ -40,25 +41,25 @@ public class Main {
 
                     switch (choice) {
                         case 1:
-                            createEmployee(scanner);
+                            createEmployee();
                             break;
                         case 2:
-                            getEmployeeByID(scanner);
+                            getEmployeeByID();
                             break;
                         case 3:
-                            updateEmployee(scanner);
+                            updateEmployee();
                             break;
                         case 4:
-                            deleteEmployee(scanner);
+                            deleteEmployee();
                             break;
                         case 5:
                             getAllEmployees();
                             break;
                         case 6:
-                            importEmployeesFromFile(scanner);
+                            importEmployeesFromFile();
                             break;
                         case 7:
-                            generateCustomReport(scanner);
+                            generateCustomReport();
                             break;
                         case 8:
                             System.out.println("Exiting...");
@@ -94,285 +95,301 @@ public class Main {
 
     /**
      * Imports employee data from a file and adds the employees to the HR database.
-     * importEmployeesFromFile(Scanner scanner): This method allows the user to import employee data from a file and add the employees to the HR database.
-     * @param scanner the Scanner object used to read user input
+     * importEmployeesFromFile(Scanner): This method allows the user to import employee data from a file and add the employees to the HR database.
+     * the Scanner object used to read user input
      * This method does not return anything (void).
      */
-    private static void importEmployeesFromFile(Scanner scanner) {
-        System.out.print("Enter the file path: ");
-        String filePath = scanner.nextLine();
+    public static void importEmployeesFromFile() {
+        String filePath = JOptionPane.showInputDialog("Enter the file path:");
+        if (filePath != null) {
+            try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    String[] employeeData = line.split(",");
+                    if (employeeData.length == 11) {
+                        int employeeID = Integer.parseInt(employeeData[0]);
+                        String firstName = employeeData[1];
+                        String lastName = employeeData[2];
+                        String email = employeeData[3];
+                        String dateOfBirth = employeeData[4];
+                        String jobTitle = employeeData[5];
+                        String department = employeeData[6];
+                        String hireDate = employeeData[7];
+                        double salary = Double.parseDouble(employeeData[8]);
+                        String phoneNumber = employeeData[9];
+                        String address = employeeData[10];
 
-        try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
-            String line;
-            while ((line = reader.readLine()) != null) {
-                String[] employeeData = line.split(",");
-                if (employeeData.length == 11) {
-                    int employeeID = Integer.parseInt(employeeData[0]);
-                    String firstName = employeeData[1];
-                    String lastName = employeeData[2];
-                    String email = employeeData[3];
-                    String dateOfBirth = employeeData[4];
-                    String jobTitle = employeeData[5];
-                    String department = employeeData[6];
-                    String hireDate = employeeData[7];
-                    double salary = Double.parseDouble(employeeData[8]);
-                    String phoneNumber = employeeData[9];
-                    String address = employeeData[10];
-
-                    Employee employee = new Employee(
-                            employeeID, firstName, lastName, email, dateOfBirth,
-                            jobTitle, department, hireDate, salary, phoneNumber, address
-                    );
-                    employeeDAO.createEmployee(employee);
-                    System.out.println("Employee added successfully: " + employee.getFirstName() + " " + employee.getLastName());
-                } else {
-                    System.out.println("Invalid employee data format in line: " + line);
+                        Employee employee = new Employee(
+                                employeeID, firstName, lastName, email, dateOfBirth,
+                                jobTitle, department, hireDate, salary, phoneNumber, address
+                        );
+                        employeeDAO.createEmployee(employee);
+                        JOptionPane.showMessageDialog(null, "Employee added successfully: " + employee.getFirstName() + " " + employee.getLastName());
+                    } else {
+                        JOptionPane.showMessageDialog(null, "Invalid employee data format in line: " + line, "Error", JOptionPane.ERROR_MESSAGE);
+                    }
                 }
+            } catch (IOException e) {
+                JOptionPane.showMessageDialog(null, "Error reading file: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            } catch (NumberFormatException e) {
+                JOptionPane.showMessageDialog(null, "Invalid employee data format.", "Error", JOptionPane.ERROR_MESSAGE);
             }
-        } catch (IOException e) {
-            System.out.println("Error reading file: " + e.getMessage());
-        } catch (NumberFormatException e) {
-            System.out.println("Invalid employee data format.");
         }
     }
 
     /**
      * Creates a new employee record in the HR database.
      * createEmployee(Scanner scanner): This method prompts the user to enter employee details and creates a new employee record in the HR database.
-     * @param scanner the Scanner object used to read user input
+     * the Scanner object used to read user input
      * This method does not return anything (void).
      */
-    private static void createEmployee(Scanner scanner) {
+    public static void createEmployee() {
         int employeeID;
         while (true) {
-            System.out.print("Enter Employee ID: ");
-            if (scanner.hasNextInt()) {
-                employeeID = scanner.nextInt();
-                scanner.nextLine(); // Consume newline character
-                break;
+            String idInput = JOptionPane.showInputDialog("Enter Employee ID:");
+            if (idInput != null) {
+                try {
+                    employeeID = Integer.parseInt(idInput);
+                    if (employeeID <= 0) {
+                        JOptionPane.showMessageDialog(null, "Invalid input. Please enter a positive integer.");
+                        continue;
+                    }
+                    break;
+                } catch (NumberFormatException e) {
+                    JOptionPane.showMessageDialog(null, "Invalid input. Please enter a valid integer.");
+                    continue;
+                }
             } else {
-                System.out.println("Invalid input. Please enter a valid integer.");
-                scanner.nextLine(); // Consume invalid input
+                return;
             }
         }
 
         String firstName;
         while (true) {
-            System.out.print("Enter First Name: ");
-            if (scanner.hasNextLine()) {
-                firstName = scanner.nextLine();
+            firstName = JOptionPane.showInputDialog("Enter First Name:");
+            if (firstName != null) {
                 if (!firstName.trim().isEmpty()) {
                     break;
                 } else {
-                    System.out.println("First name cannot be empty.");
+                    JOptionPane.showMessageDialog(null, "First name cannot be empty.");
                 }
+            } else {
+                return;
             }
         }
 
         String lastName;
         while (true) {
-            System.out.print("Enter Last Name: ");
-            if (scanner.hasNextLine()) {
-                lastName = scanner.nextLine();
+            lastName = JOptionPane.showInputDialog("Enter Last Name:");
+            if (lastName != null) {
                 if (!lastName.trim().isEmpty()) {
                     break;
                 } else {
-                    System.out.println("Last name cannot be empty.");
+                    JOptionPane.showMessageDialog(null, "Last name cannot be empty.");
                 }
+            } else {
+                return;
             }
         }
 
         String email;
         while (true) {
-            System.out.print("Enter Email: ");
-            if (scanner.hasNextLine()) {
-                email = scanner.nextLine();
+            email = JOptionPane.showInputDialog("Enter Email:");
+            if (email != null) {
                 if (!email.trim().isEmpty() && email.contains("@")) {
                     break;
                 } else {
-                    System.out.println("Invalid email. Please enter a valid email address.");
+                    JOptionPane.showMessageDialog(null, "Invalid email. Please enter a valid email address.");
                 }
+            } else {
+                return;
             }
         }
 
         String dateOfBirthStr;
         while (true) {
-            System.out.print("Enter Date of Birth (yyyy-MM-dd): ");
-            if (scanner.hasNextLine()) {
-                dateOfBirthStr = scanner.nextLine();
+            dateOfBirthStr = JOptionPane.showInputDialog("Enter Date of Birth (yyyy-MM-dd):");
+            if (dateOfBirthStr != null) {
                 try {
                     Date.valueOf(dateOfBirthStr);
                     break;
                 } catch (IllegalArgumentException e) {
-                    System.out.println("Invalid date format. Please enter a valid date in yyyy-MM-dd format.");
+                    JOptionPane.showMessageDialog(null, "Invalid date format. Please enter a valid date in yyyy-MM-dd format.");
                 }
+            } else {
+                return;
             }
         }
         String dateOfBirth = String.valueOf(Date.valueOf(dateOfBirthStr));
 
         String jobTitle;
         while (true) {
-            System.out.print("Enter Job Title: ");
-            if (scanner.hasNextLine()) {
-                jobTitle = scanner.nextLine();
+            jobTitle = JOptionPane.showInputDialog("Enter Job Title:");
+            if (jobTitle != null) {
                 if (!jobTitle.trim().isEmpty()) {
                     break;
                 } else {
-                    System.out.println("Job title cannot be empty.");
+                    JOptionPane.showMessageDialog(null, "Job title cannot be empty.");
                 }
+            } else {
+                return;
             }
         }
 
         String department;
         while (true) {
-            System.out.print("Enter Department: ");
-            if (scanner.hasNextLine()) {
-                department = scanner.nextLine();
+            department = JOptionPane.showInputDialog("Enter Department:");
+            if (department != null) {
                 if (!department.trim().isEmpty()) {
                     break;
                 } else {
-                    System.out.println("Department cannot be empty.");
+                    JOptionPane.showMessageDialog(null, "Department cannot be empty.");
                 }
+            } else {
+                return;
             }
         }
 
         String hireDateStr;
         while (true) {
-            System.out.print("Enter Hire Date (yyyy-MM-dd): ");
-            if (scanner.hasNextLine()) {
-                hireDateStr = scanner.nextLine();
+            hireDateStr = JOptionPane.showInputDialog("Enter Hire Date (yyyy-MM-dd):");
+            if (hireDateStr != null) {
                 try {
                     Date.valueOf(hireDateStr);
                     break;
                 } catch (IllegalArgumentException e) {
-                    System.out.println("Invalid date format. Please enter a valid date in yyyy-MM-dd format.");
+                    JOptionPane.showMessageDialog(null, "Invalid date format. Please enter a valid date in yyyy-MM-dd format.");
                 }
+            } else {
+                return;
             }
         }
         String hireDate = String.valueOf(Date.valueOf(hireDateStr));
 
         double salary;
         while (true) {
-            System.out.print("Enter Salary: ");
-            if (scanner.hasNextDouble()) {
-                salary = scanner.nextDouble();
-                scanner.nextLine(); // Consume newline character
-                if (salary > 0) {
+            String salaryInput = JOptionPane.showInputDialog("Enter Salary:");
+            if (salaryInput != null) {
+                try {
+                    salary = Double.parseDouble(salaryInput);
+                    if (salary <= 0) {
+                        JOptionPane.showMessageDialog(null, "Salary must be a positive number.");
+                        continue;
+                    }
                     break;
-                } else {
-                    System.out.println("Salary must be a positive number.");
+                } catch (NumberFormatException e) {
+                    JOptionPane.showMessageDialog(null, "Invalid input. Please enter a valid salary.");
+                    continue;
                 }
             } else {
-                System.out.println("Invalid input. Please enter a valid salary.");
-                scanner.nextLine(); // Consume invalid input
+                return;
             }
         }
 
         String phoneNumber;
         while (true) {
-            System.out.print("Enter Phone Number: ");
-            if (scanner.hasNextLine()) {
-                phoneNumber = scanner.nextLine();
+            phoneNumber = JOptionPane.showInputDialog("Enter Phone Number:");
+            if (phoneNumber != null) {
                 if (!phoneNumber.trim().isEmpty() && phoneNumber.length() == 10) {
                     try {
                         Long.parseLong(phoneNumber);
                         break;
                     } catch (NumberFormatException e) {
-                        System.out.println("Invalid phone number. Please enter a valid 10-digit phone number.");
+                        JOptionPane.showMessageDialog(null, "Invalid phone number. Please enter a valid 10-digit phone number.");
                     }
                 } else {
-                    System.out.println("Invalid phone number. Please enter a valid 10-digit phone number.");
+                    JOptionPane.showMessageDialog(null, "Invalid phone number. Please enter a valid 10-digit phone number.");
                 }
+            } else {
+                return;
             }
         }
 
-
-
         String address;
         while (true) {
-            System.out.print("Enter Address: ");
-            if (scanner.hasNextLine()) {
-                address = scanner.nextLine();
+            address = JOptionPane.showInputDialog("Enter Address:");
+            if (address != null) {
                 if (!address.trim().isEmpty()) {
                     break;
                 } else {
-                    System.out.println("Address cannot be empty.");
+                    JOptionPane.showMessageDialog(null, "Address cannot be empty.");
                 }
+            } else {
+                return;
             }
         }
 
         Employee employee = new Employee(employeeID, firstName, lastName, email, dateOfBirth, jobTitle, department, hireDate, salary, phoneNumber, address);
         employeeDAO.createEmployee(employee);
-        System.out.println("Employee created successfully.");
+        JOptionPane.showMessageDialog(null, "Employee created successfully.");
     }
 
     /**
      * Retrieves an employee record from the HR database based on the employee's ID.
      * getEmployeeByID(Scanner scanner): This method prompts the user to enter an employee ID and retrieves the corresponding employee record from the HR database.
-     * @param scanner the Scanner object used to read user input
+     * the Scanner object used to read user input
      * This method does not return anything (void). It prints the employee details to the console.
      */
 
-    private static void getEmployeeByID(Scanner scanner) {
-        int employeeID;
-        while (true) {
-            System.out.print("Enter Employee ID: ");
-            if (scanner.hasNextInt()) {
-                employeeID = scanner.nextInt();
-                if (employeeID > 0) {
-                    scanner.nextLine(); // Consume newline character
-                    break;
-                } else {
-                    System.out.println("Invalid input. Please enter a positive integer.");
-                    scanner.nextLine(); // Consume invalid input
+   public static void getEmployeeByID() {
+        String idInput = JOptionPane.showInputDialog("Enter Employee ID:");
+        if (idInput != null) {
+            int employeeID;
+            try {
+                employeeID = Integer.parseInt(idInput);
+                if (employeeID <= 0) {
+                    JOptionPane.showMessageDialog(null, "Invalid input. Please enter a positive integer.");
+                    return;
                 }
+            } catch (NumberFormatException e) {
+                JOptionPane.showMessageDialog(null, "Invalid input. Please enter a valid integer.");
+                return;
+            }
+
+            Employee employee = employeeDAO.getEmployeeByID(employeeID);
+            if (employee != null) {
+                String employeeInfo = "Employee Details:\n"
+                        + "ID: " + employee.getEmployeeID() + "\n"
+                        + "First Name: " + employee.getFirstName() + "\n"
+                        + "Last Name: " + employee.getLastName() + "\n"
+                        + "Email: " + employee.getEmail() + "\n"
+                        + "Date of Birth: " + employee.getDateOfBirth() + "\n"
+                        + "Job Title: " + employee.getJobTitle() + "\n"
+                        + "Department: " + employee.getDepartment() + "\n"
+                        + "Hire Date: " + employee.getHireDate() + "\n"
+                        + "Salary: " + employee.getSalary() + "\n"
+                        + "Phone Number: " + employee.getPhoneNumber() + "\n"
+                        + "Address: " + employee.getAddress();
+                JOptionPane.showMessageDialog(null, employeeInfo);
             } else {
-                System.out.println("Invalid input. Please enter a valid integer.");
-                scanner.nextLine(); // Consume invalid input
+                JOptionPane.showMessageDialog(null, "Employee not found.");
             }
         }
-
-        Employee employee = employeeDAO.getEmployeeByID(employeeID);
-        if (employee != null) {
-            System.out.println("Employee Details:");
-            System.out.println("ID: " + employee.getEmployeeID());
-            System.out.println("First Name: " + employee.getFirstName());
-            System.out.println("Last Name: " + employee.getLastName());
-            System.out.println("Email: " + employee.getEmail());
-            System.out.println("Date of Birth: " + employee.getDateOfBirth());
-            System.out.println("Job Title: " + employee.getJobTitle());
-            System.out.println("Department: " + employee.getDepartment());
-            System.out.println("Hire Date: " + employee.getHireDate());
-            System.out.println("Salary: " + employee.getSalary());
-            System.out.println("Phone Number: " + employee.getPhoneNumber());
-            System.out.println("Address: " + employee.getAddress());
-        } else {
-            System.out.println("Employee not found.");
-        }
     }
+
 
     /**
      * Updates an existing employee record in the HR database.
      * updateEmployee(Scanner scanner): This method allows the user to update an existing employee record in the HR database.
-     * @param scanner the Scanner object used to read user input
+     * the Scanner object used to read user input
      * This method does not return anything (void).
      */
-    private static void updateEmployee(Scanner scanner) {
+    public static void updateEmployee() {
         int employeeID;
         while (true) {
-            System.out.print("Enter Employee ID: ");
-            if (scanner.hasNextInt()) {
-                employeeID = scanner.nextInt();
+            String input = JOptionPane.showInputDialog(null, "Enter Employee ID:", "Update Employee", JOptionPane.QUESTION_MESSAGE);
+            if (input == null) { // user clicked "Cancel"
+                return; // exit the method
+            }
+            try {
+                employeeID = Integer.parseInt(input);
                 if (employeeID >= 0) {
-                    scanner.nextLine(); // Consume newline character
                     break;
                 } else {
-                    System.out.println("Employee ID cannot be negative. Please enter a valid integer.");
-                    scanner.nextLine(); // Consume invalid input
+                    JOptionPane.showMessageDialog(null, "Employee ID cannot be negative. Please enter a valid integer.");
                 }
-            } else {
-                System.out.println("Invalid input. Please enter a valid integer.");
-                scanner.nextLine(); // Consume invalid input
+            } catch (NumberFormatException e) {
+                JOptionPane.showMessageDialog(null, "Invalid input. Please enter a valid integer.");
             }
         }
 
@@ -380,143 +397,115 @@ public class Main {
         if (employee != null) {
             String firstName;
             while (true) {
-                System.out.print("Enter First Name: ");
-                if (scanner.hasNextLine()) {
-                    firstName = scanner.nextLine();
-                    if (!firstName.trim().isEmpty()) {
-                        break;
-                    } else {
-                        System.out.println("First name cannot be empty.");
-                    }
+                firstName = JOptionPane.showInputDialog("Enter First Name:");
+                if (!firstName.trim().isEmpty()) {
+                    break;
+                } else {
+                    JOptionPane.showMessageDialog(null, "First name cannot be empty.");
                 }
             }
 
             String lastName;
             while (true) {
-                System.out.print("Enter Last Name: ");
-                if (scanner.hasNextLine()) {
-                    lastName = scanner.nextLine();
-                    if (!lastName.trim().isEmpty()) {
-                        break;
-                    } else {
-                        System.out.println("Last name cannot be empty.");
-                    }
+                lastName = JOptionPane.showInputDialog("Enter Last Name:");
+                if (!lastName.trim().isEmpty()) {
+                    break;
+                } else {
+                    JOptionPane.showMessageDialog(null, "Last name cannot be empty.");
                 }
             }
 
             String email;
             while (true) {
-                System.out.print("Enter Email: ");
-                if (scanner.hasNextLine()) {
-                    email = scanner.nextLine();
-                    if (!email.trim().isEmpty() && email.contains("@")) {
-                        break;
-                    } else {
-                        System.out.println("Invalid email. Please enter a valid email address.");
-                    }
+                email = JOptionPane.showInputDialog("Enter Email:");
+                if (!email.trim().isEmpty() && email.contains("@")) {
+                    break;
+                } else {
+                    JOptionPane.showMessageDialog(null, "Invalid email. Please enter a valid email address.");
                 }
             }
 
             String dateOfBirthStr;
             while (true) {
-                System.out.print("Enter Date of Birth (yyyy-MM-dd): ");
-                if (scanner.hasNextLine()) {
-                    dateOfBirthStr = scanner.nextLine();
-                    try {
-                        Date.valueOf(dateOfBirthStr);
-                        break;
-                    } catch (IllegalArgumentException e) {
-                        System.out.println("Invalid date format. Please enter a valid date in yyyy-MM-dd format.");
-                    }
+                dateOfBirthStr = JOptionPane.showInputDialog("Enter Date of Birth (yyyy-MM-dd):");
+                try {
+                    Date.valueOf(dateOfBirthStr);
+                    break;
+                } catch (IllegalArgumentException e) {
+                    JOptionPane.showMessageDialog(null, "Invalid date format. Please enter a valid date in yyyy-MM-dd format.");
                 }
             }
             Date dateOfBirth = Date.valueOf(dateOfBirthStr);
 
             String jobTitle;
             while (true) {
-                System.out.print("Enter Job Title: ");
-                if (scanner.hasNextLine()) {
-                    jobTitle = scanner.nextLine();
-                    if (!jobTitle.trim().isEmpty()) {
-                        break;
-                    } else {
-                        System.out.println("Job title cannot be empty.");
-                    }
+                jobTitle = JOptionPane.showInputDialog("Enter Job Title:");
+                if (!jobTitle.trim().isEmpty()) {
+                    break;
+                } else {
+                    JOptionPane.showMessageDialog(null, "Job title cannot be empty.");
                 }
             }
 
             String department;
             while (true) {
-                System.out.print("Enter Department: ");
-                if (scanner.hasNextLine()) {
-                    department = scanner.nextLine();
-                    if (!department.trim().isEmpty()) {
-                        break;
-                    } else {
-                        System.out.println("Department cannot be empty.");
-                    }
+                department = JOptionPane.showInputDialog("Enter Department:");
+                if (!department.trim().isEmpty()) {
+                    break;
+                } else {
+                    JOptionPane.showMessageDialog(null, "Department cannot be empty.");
                 }
             }
 
             String hireDateStr;
             while (true) {
-                System.out.print("Enter Hire Date (yyyy-MM-dd): ");
-                if (scanner.hasNextLine()) {
-                    hireDateStr = scanner.nextLine();
-                    try {
-                        Date.valueOf(hireDateStr);
-                        break;
-                    } catch (IllegalArgumentException e) {
-                        System.out.println("Invalid date format. Please enter a valid date in yyyy-MM-dd format.");
-                    }
+                hireDateStr = JOptionPane.showInputDialog("Enter Hire Date (yyyy-MM-dd):");
+                try {
+                    Date.valueOf(hireDateStr);
+                    break;
+                } catch (IllegalArgumentException e) {
+                    JOptionPane.showMessageDialog(null, "Invalid date format. Please enter a valid date in yyyy-MM-dd format.");
                 }
             }
             Date hireDate = Date.valueOf(hireDateStr);
 
             double salary;
             while (true) {
-                System.out.print("Enter Salary: ");
-                if (scanner.hasNextDouble()) {
-                    salary = scanner.nextDouble();
-                    scanner.nextLine(); // Consume newline character
+                String salaryStr = JOptionPane.showInputDialog("Enter Salary:");
+                try {
+                    salary = Double.parseDouble(salaryStr);
                     if (salary > 0) {
                         break;
                     } else {
-                        System.out.println("Salary must be a positive number.");
+                        JOptionPane.showMessageDialog(null, "Salary must be a positive number.");
                     }
-                } else {
-                    System.out.println("Invalid input. Please enter a valid salary.");
-                    scanner.nextLine(); // Consume invalid input
+                } catch (NumberFormatException e) {
+                    JOptionPane.showMessageDialog(null, "Invalid input. Please enter a valid salary.");
                 }
             }
 
             int phoneNumber;
             while (true) {
-                System.out.print("Enter Phone Number: ");
-                if (scanner.hasNextInt()) {
-                    phoneNumber = scanner.nextInt();
-                    scanner.nextLine(); // Consume newline character
+                String phoneNumberStr = JOptionPane.showInputDialog("Enter Phone Number:");
+                try {
+                    phoneNumber = Integer.parseInt(phoneNumberStr);
                     if (String.valueOf(phoneNumber).length() == 10) {
                         break;
                     } else {
-                        System.out.println("Invalid phone number. Please enter a 10-digit phone number.");
+                        JOptionPane.showMessageDialog(null, "Invalid phone number. Please enter a 10-digit phone number.");
                     }
-                } else {
-                    System.out.println("Invalid input. Please enter a valid phone number.");
-                    scanner.nextLine(); // Consume invalid input
+                } catch (NumberFormatException e) {
+                    JOptionPane.showMessageDialog(null, "Invalid input. Please enter a valid phone number.");
                 }
             }
 
             String address;
             while (true) {
-                System.out.print("Enter Address: ");
-                if (scanner.hasNextLine()) {
-                    address = scanner.nextLine();
-                    if (!address.trim().isEmpty()) {
-                        break;
-                    } else {
-                        System.out.println("Address cannot be empty.");
-                    }
+                address = JOptionPane.showInputDialog("Enter Address:");
+                if (!address.trim().isEmpty()) {
+                    break;
+                } else {
+                    JOptionPane.showMessageDialog(null, "Address cannot be empty.");
                 }
             }
 
@@ -532,73 +521,46 @@ public class Main {
             employee.setAddress(address);
 
             employeeDAO.updateEmployee(employee);
-            System.out.println("Employee updated successfully.");
+            JOptionPane.showMessageDialog(null, "Employee updated successfully.");
         } else {
-            System.out.println("Employee not found.");
+            JOptionPane.showMessageDialog(null, "Employee not found.");
         }
     }
-
     /**
      * Deletes an employee record from the HR database based on the employee's ID.
      * deleteEmployee(Scanner scanner): This method allows the user to delete an employee record from the HR database.
-     * @param scanner the Scanner object used to read user input
+     *the Scanner object used to read user input
      * This method does not return anything (void).
      */
-    private static void deleteEmployee(Scanner scanner) {
-        System.out.println("Delete Employee");
-        System.out.println("1. Delete by Employee ID");
-        System.out.println("2. Delete by Email");
-        int choice;
-        while (true) {
-            System.out.print("Enter your choice (1 or 2): ");
-            if (scanner.hasNextInt()) {
-                choice = scanner.nextInt();
-                scanner.nextLine(); // Consume newline character
-                if (choice == 1 || choice == 2) {
+    public static void deleteEmployee() {
+        String[] options = {"Delete by Employee ID", "Delete by Email"};
+        String choice = (String) JOptionPane.showInputDialog(null, "Delete Employee", "Delete Employee", JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
+
+        if (choice.equals("Delete by Employee ID")) {
+            int employeeID;
+            while (true) {
+                String input = JOptionPane.showInputDialog("Enter Employee ID:");
+                try {
+                    employeeID = Integer.parseInt(input);
+                    break;
+                } catch (NumberFormatException e) {
+                    JOptionPane.showMessageDialog(null, "Invalid input. Please enter a valid integer.");
+                }
+            }
+            employeeDAO.deleteEmployeeByID(employeeID);
+        } else if (choice.equals("Delete by Email")) {
+            String email;
+            while (true) {
+                email = JOptionPane.showInputDialog("Enter Employee Email:");
+                if (!email.trim().isEmpty() && email.contains("@")) {
                     break;
                 } else {
-                    System.out.println("Invalid choice. Please try again.");
+                    JOptionPane.showMessageDialog(null, "Invalid email. Please enter a valid email address.");
                 }
-            } else {
-                System.out.println("Invalid input. Please enter a valid integer.");
-                scanner.nextLine(); // Consume invalid input
             }
+            employeeDAO.deleteEmployeeByEmail(email);
         }
-
-        switch (choice) {
-            case 1:
-                int employeeID;
-                while (true) {
-                    System.out.print("Enter Employee ID: ");
-                    if (scanner.hasNextInt()) {
-                        employeeID = scanner.nextInt();
-                        scanner.nextLine(); // Consume newline character
-                        break;
-                    } else {
-                        System.out.println("Invalid input. Please enter a valid integer.");
-                        scanner.nextLine(); // Consume invalid input
-                    }
-                }
-                employeeDAO.deleteEmployeeByID(employeeID);
-                System.out.println("Employee deleted successfully.");
-                break;
-            case 2:
-                String email;
-                while (true) {
-                    System.out.print("Enter Employee Email: ");
-                    if (scanner.hasNextLine()) {
-                        email = scanner.nextLine();
-                        if (!email.trim().isEmpty() && email.contains("@")) {
-                            break;
-                        } else {
-                            System.out.println("Invalid email. Please enter a valid email address.");
-                        }
-                    }
-                }
-                employeeDAO.deleteEmployeeByEmail(email);
-                System.out.println("Employee deleted successfully.");
-                break;
-        }
+        JOptionPane.showMessageDialog(null, "Employee deleted successfully.");
     }
 
     /**
@@ -606,79 +568,98 @@ public class Main {
      * getAllEmployees(): This method retrieves and displays all the employee records from the HR database.
      * This method does not return anything (void). It prints all the employee records to the console.
      */
-    private static void getAllEmployees() {
+    public static void getAllEmployees() {
         List<Employee> employees = employeeDAO.getAllEmployees();
         if (employees.isEmpty()) {
-            System.out.println("No employees found.");
+            JOptionPane.showMessageDialog(null, "No employees found.");
         } else {
-            System.out.println("All Employees:");
+            StringBuilder employeeList = new StringBuilder("All Employees:\n");
             for (Employee employee : employees) {
-                System.out.println("ID: " + employee.getEmployeeID());
-                System.out.println("First Name: " + employee.getFirstName());
-                System.out.println("Last Name: " + employee.getLastName());
-                System.out.println("Email: " + employee.getEmail());
-                System.out.println("Date of Birth: " + employee.getDateOfBirth());
-                System.out.println("Job Title: " + employee.getJobTitle());
-                System.out.println("Department: " + employee.getDepartment());
-                System.out.println("Hire Date: " + employee.getHireDate());
-                System.out.println("Salary: " + employee.getSalary());
-                System.out.println("Phone Number: " + employee.getPhoneNumber());
-                System.out.println("Address: " + employee.getAddress());
-                System.out.println();
+                employeeList.append("ID: ").append(employee.getEmployeeID()).append("\n");
+                employeeList.append("First Name: ").append(employee.getFirstName()).append("\n");
+                employeeList.append("Last Name: ").append(employee.getLastName()).append("\n");
+                employeeList.append("Email: ").append(employee.getEmail()).append("\n");
+                employeeList.append("Date of Birth: ").append(employee.getDateOfBirth()).append("\n");
+                employeeList.append("Job Title: ").append(employee.getJobTitle()).append("\n");
+                employeeList.append("Department: ").append(employee.getDepartment()).append("\n");
+                employeeList.append("Hire Date: ").append(employee.getHireDate()).append("\n");
+                employeeList.append("Salary: ").append(employee.getSalary()).append("\n");
+                employeeList.append("Phone Number: ").append(employee.getPhoneNumber()).append("\n");
+                employeeList.append("Address: ").append(employee.getAddress()).append("\n\n");
             }
+
+            JTextArea textArea = new JTextArea(employeeList.toString(), 20, 40);
+            textArea.setEditable(false);
+            JScrollPane scrollPane = new JScrollPane(textArea);
+
+            JOptionPane.showMessageDialog(null, scrollPane, "All Employees", JOptionPane.INFORMATION_MESSAGE);
         }
     }
-
     /**
      * Generates a custom report based on user-specified criteria.
      * generateCustomReport(Scanner scanner): This method allows the user to generate a custom report based on specific criteria.
-     * @param scanner the Scanner object used to read user input
+     * the Scanner object used to read user input
      * This method does not return anything (void). It generates and displays the custom report.
      */
-    private static void generateCustomReport(Scanner scanner) {
-        System.out.println("Generate Custom Report");
-        System.out.print("Enter department (or leave blank for all): ");
-        String department = scanner.nextLine();
+    public static void generateCustomReport() {
+        String department = JOptionPane.showInputDialog("Enter department (or leave blank for all): ");
+        if (department == null) { // user clicked "Cancel"
+            return; // go back to main menu
+        }
 
-        System.out.print("Enter job title (or leave blank for all): ");
-        String jobTitle = scanner.nextLine();
+        String jobTitle = JOptionPane.showInputDialog("Enter job title (or leave blank for all): ");
+        if (jobTitle == null) {
+            return;
+        }
 
-        System.out.print("Enter minimum salary (or leave blank for no minimum): ");
-        String minSalaryStr = scanner.nextLine();
+        String minSalaryStr = JOptionPane.showInputDialog("Enter minimum salary (or leave blank for no minimum): ");
+        if (minSalaryStr == null) {
+            return;
+        }
+
         double minSalary;
         try {
             minSalary = minSalaryStr.isEmpty() ? 0 : Double.parseDouble(minSalaryStr);
         } catch (NumberFormatException e) {
-            System.out.println("Invalid minimum salary. Please enter a valid number.");
+            JOptionPane.showMessageDialog(null, "Invalid minimum salary. Please enter a valid number.");
             return;
         }
 
-        System.out.print("Enter maximum salary (or leave blank for no maximum): ");
-        String maxSalaryStr = scanner.nextLine();
+        String maxSalaryStr = JOptionPane.showInputDialog("Enter maximum salary (or leave blank for no maximum): ");
+        if (maxSalaryStr == null) {
+            return;
+        }
+
         double maxSalary;
         try {
             maxSalary = maxSalaryStr.isEmpty() ? Double.MAX_VALUE : Double.parseDouble(maxSalaryStr);
         } catch (NumberFormatException e) {
-            System.out.println("Invalid maximum salary. Please enter a valid number.");
+            JOptionPane.showMessageDialog(null, "Invalid maximum salary. Please enter a valid number.");
             return;
         }
 
         if (minSalary > maxSalary) {
-            System.out.println("Minimum salary cannot be greater than maximum salary.");
+            JOptionPane.showMessageDialog(null, "Minimum salary cannot be greater than maximum salary.");
             return;
         }
 
         List<Employee> filteredEmployees = employeeDAO.getEmployeesByFilter(department, jobTitle, minSalary, maxSalary);
 
-        System.out.println("Custom Report:");
-        System.out.println("Department\tJob Title\tFirst Name\tLast Name\tSalary");
-        System.out.println("-----------------------------------------------------------");
+        StringBuilder report = new StringBuilder("Custom Report:\n");
+        report.append("Department\tJob Title\tFirst Name\tLast Name\tSalary\n");
+        report.append("-----------------------------------------------------------\n");
         for (Employee employee : filteredEmployees) {
-            System.out.printf("%s\t%s\t%s\t%s\t$%.2f%n",
+            report.append(String.format("%s\t%s\t%s\t%s\t$%.2f%n",
                     employee.getDepartment(), employee.getJobTitle(),
                     employee.getFirstName(), employee.getLastName(),
-                    employee.getSalary());
+                    employee.getSalary()));
         }
+
+        JTextArea textArea = new JTextArea(report.toString(), 20, 40);
+        textArea.setEditable(false);
+        JScrollPane scrollPane = new JScrollPane(textArea);
+
+        JOptionPane.showMessageDialog(null, scrollPane, "Custom Report", JOptionPane.INFORMATION_MESSAGE);
     }
 }
 
