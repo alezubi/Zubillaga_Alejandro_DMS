@@ -1,4 +1,5 @@
 import javax.swing.*;
+import java.awt.*;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
@@ -645,21 +646,34 @@ public class Main {
 
         List<Employee> filteredEmployees = employeeDAO.getEmployeesByFilter(department, jobTitle, minSalary, maxSalary);
 
-        StringBuilder report = new StringBuilder("Custom Report:\n");
-        report.append("Department\tJob Title\tFirst Name\tLast Name\tSalary\n");
-        report.append("-----------------------------------------------------------\n");
+        // Creates a panel to hold the report content
+        JPanel reportPanel = new JPanel(new BorderLayout());
+        JTextArea textArea = new JTextArea(20, 40);
+        textArea.setEditable(false);
+        textArea.setFont(new Font(Font.MONOSPACED, Font.PLAIN, 12)); // Monospaced font for consistent spacing
+        JScrollPane scrollPane = new JScrollPane(textArea);
+        reportPanel.add(scrollPane, BorderLayout.CENTER);
+
+        // Prepares the report content
+        StringBuilder report = new StringBuilder();
+        report.append(String.format("%-20s %-20s %-15s %-15s %s\n", "Department", "Job Title", "First Name", "Last Name", "Salary"));
+        report.append("------------------------------------------------------------------------------\n");
         for (Employee employee : filteredEmployees) {
-            report.append(String.format("%s\t%s\t%s\t%s\t$%.2f%n",
+            report.append(String.format("%-20s %-20s %-15s %-15s $%.2f\n",
                     employee.getDepartment(), employee.getJobTitle(),
                     employee.getFirstName(), employee.getLastName(),
                     employee.getSalary()));
         }
+        textArea.setText(report.toString());
 
-        JTextArea textArea = new JTextArea(report.toString(), 20, 40);
-        textArea.setEditable(false);
-        JScrollPane scrollPane = new JScrollPane(textArea);
-
-        JOptionPane.showMessageDialog(null, scrollPane, "Custom Report", JOptionPane.INFORMATION_MESSAGE);
+        // Create a dialog to display the report
+        JDialog dialog = new JDialog();
+        dialog.setTitle("Custom Report");
+        dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+        dialog.add(reportPanel);
+        dialog.pack();
+        dialog.setLocationRelativeTo(null); // Center the dialog on screen
+        dialog.setVisible(true);
     }
 }
 
