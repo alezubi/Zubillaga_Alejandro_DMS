@@ -3,27 +3,44 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-
 /**
  * Author: Alejandro Zubillaga
  * Course: 202430-CEN-3024C-31950
- * Date: Jun 1, 2024
+ * Date: Jun 26, 2024
  * Software Development I
  *
  * A graphical user interface for an Employee Management System.
  */
 public class EmployeeManagementSystemUI {
     private JFrame frame; // The main frame for the application
-    // private JTextField choiceField;
-    // unused field that could be used in the future
 
-    public EmployeeManagementSystemUI() {
+    private static String dbUser;
+    private static String dbPassword;
+    private static String dbUrl;
+
+    public EmployeeManagementSystemUI(String dbUser, String dbPassword, String dbUrl) {
+        this.dbUser = dbUser;
+        this.dbPassword = dbPassword;
+        this.dbUrl = dbUrl;
         createUI();
     }
-//
+
+    // Methods to retrieve database credentials
+    public static String getDbUser() {
+        return dbUser;
+    }
+
+    public static String getDbPassword() {
+        return dbPassword;
+    }
+
+    public static String getDbUrl() {
+        return dbUrl;
+    }
+
     private void createUI() {
 
-        frame = new JFrame("Employee Management System");// Create the main frame with title
+        frame = new JFrame("Employee Management System"); // Create the main frame with title
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // Exit application on close
         frame.setLayout(new BorderLayout()); // Use BorderLayout for main frame layout
 
@@ -79,18 +96,13 @@ public class EmployeeManagementSystemUI {
         gbc.gridy = gridy;
         panel.add(button, gbc);
     }
+
+
     /**
      * Main method to launch the application on the Event Dispatch Thread (EDT).
      * @param args Command-line arguments (not used).
      */
     public static void main(String[] args) {
-        // Schedule a job for the event dispatch thread (may be needed in the future)
-        // creating and showing this application's GUI.
-        SwingUtilities.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                new EmployeeManagementSystemUI();
-            }
-        });
+
     }
 }

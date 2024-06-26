@@ -11,10 +11,10 @@ public class EmployeeDAOTest {
 
     private EmployeeDAO employeeDAO;
 
-    @Before
-    public void setUp() {
-        employeeDAO = new EmployeeDAO();
-    }
+    //@Before
+    //public void setUp() {
+        //employeeDAO = new EmployeeDAO();
+    //}
 
     @After
     public void tearDown() {

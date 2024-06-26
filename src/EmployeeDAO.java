@@ -21,21 +21,19 @@ import java.util.List;
  */
 
 public class EmployeeDAO {
-    private static final String DB_URL = "jdbc:mysql://localhost:3306/hr_db";
-    private static final String DB_USER = "root";
-    private static final String DB_PASSWORD = "Ale.zubi99";
-
     private Connection connection;
 
     /**
      * Constructor for the EmployeeDAO class.
      * Establishes a connection to the HR database using the provided URL, username, and password.
-     * This is a constructor, so it does not return anything (void)
+     * @param dbUrl the database URL
+     * @param dbUser the database user
+     * @param dbPassword the database password
      */
-    public EmployeeDAO() {
+    public EmployeeDAO(String dbUrl, String dbUser, String dbPassword) {
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
-            connection = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
+            connection = DriverManager.getConnection(dbUrl, dbUser, dbPassword);
         } catch (ClassNotFoundException | SQLException e) {
             e.printStackTrace();
         }

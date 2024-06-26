@@ -21,7 +21,7 @@ import java.util.Scanner;
  * The main class displays a menu of options to the user, and calls the appropriate methods in the EmployeeDAO class based on the user's selection.
  */
 public class Main {
-    private static final EmployeeDAO employeeDAO = new EmployeeDAO();
+    private static EmployeeDAO employeeDAO;
     /**
      *
      * The main entry point of the Employee Management System.
@@ -30,6 +30,25 @@ public class Main {
         /** main(String[] args) This method does not return anything (void).
          *  This is an array of command-line arguments passed to the program when it is executed.
          */
+        // You can retrieve these values from user input or configuration as needed
+        // Use JOptionPane for input dialogs to get database credentials
+        String dbUser = JOptionPane.showInputDialog("Enter DB User:");
+        String dbPassword = JOptionPane.showInputDialog("Enter DB Password:");
+        String dbUrl = JOptionPane.showInputDialog("Enter DB URL:");
+
+        // Initialize EmployeeDAO with the database credentials
+        employeeDAO = new EmployeeDAO(dbUrl, dbUser, dbPassword);
+
+        // Create the UI with database credentials
+        SwingUtilities.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                new EmployeeManagementSystemUI(dbUser, dbPassword, dbUrl);
+            }
+        });
+
+
+
         Scanner scanner = new Scanner(System.in);
         int choice = 0;
 
