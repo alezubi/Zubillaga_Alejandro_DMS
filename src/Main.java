@@ -30,8 +30,8 @@ public class Main {
         /** main(String[] args) This method does not return anything (void).
          *  This is an array of command-line arguments passed to the program when it is executed.
          */
-        // You can retrieve these values from user input or configuration as needed
-        // Use JOptionPane for input dialogs to get database credentials
+        // Retrieves these values from user input or configuration as needed
+        // JOptionPane for input dialogs to get database credentials
         String dbUser = JOptionPane.showInputDialog("Enter DB User:");
         String dbPassword = JOptionPane.showInputDialog("Enter DB Password:");
         String dbUrl = JOptionPane.showInputDialog("Enter DB URL:");
