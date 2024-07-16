@@ -6,15 +6,26 @@ import java.sql.Date;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-
+/**
+ * Author: Alejandro Zubillaga
+ * Course: 202430-CEN-3024C-31950
+ * Date: Jun 1, 2024
+ * Software Development I
+ *
+ * Main Class
+ *
+ * Test class for the EmployeeDAO class, providing unit tests for the creation and retrieval of employees.
+ *
+ */
 public class EmployeeDAOTest {
 
     private EmployeeDAO employeeDAO;
 
-    //@Before
+   // @Before
     //public void setUp() {
-        //employeeDAO = new EmployeeDAO();
+     //   employeeDAO = new EmployeeDAO();
     //}
+
 
     @After
     public void tearDown() {
@@ -41,7 +52,10 @@ public class EmployeeDAOTest {
         assertEquals(employee.getPhoneNumber(), retrievedEmployee.getPhoneNumber());
         assertEquals(employee.getAddress(), retrievedEmployee.getAddress());
     }
-
+    /**
+     * Tests the creation of an employee and retrieval of the same employee by ID.
+     * Verifies that all employee details are correctly stored and retrieved.
+     */
     @Test
     public void testGetEmployeeByID() {
         Employee employee = new Employee(2, "Jane", "Doe", "jane.doe@example.com", String.valueOf(LocalDate.of(1985, 5, 15)), "Software Engineer", "Engineering", String.valueOf(LocalDate.of(2021, 2, 14)), 60000, "555-5678", "456 Elm St.");
@@ -61,7 +75,10 @@ public class EmployeeDAOTest {
         assertEquals(employee.getPhoneNumber(), retrievedEmployee.getPhoneNumber());
         assertEquals(employee.getAddress(), retrievedEmployee.getAddress());
     }
-
+    /**
+     * Tests the retrieval of an employee by ID.
+     * Verifies that the correct employee is retrieved and all details match.
+     */
     @Test
     public void testUpdateEmployee() {
 
@@ -98,7 +115,10 @@ public class EmployeeDAOTest {
         assertEquals(employee.getPhoneNumber(), retrievedEmployee.getPhoneNumber());
         assertEquals(employee.getAddress(), retrievedEmployee.getAddress());
     }
-
+    /**
+     * Tests the deletion of an employee by ID.
+     * Verifies that the employee is successfully deleted and cannot be retrieved by ID.
+     */
     @Test
     public void testDeleteEmployeeByID() {
         Employee employee = new Employee(1, "John", "Doe", "john.doe@example.com", String.valueOf(LocalDate.of(1980, 1, 1)), "Software Engineer", "Engineering", String.valueOf(LocalDate.of(2020, 1, 1)), 50000, "555-1234", "123 Main St.");
@@ -109,7 +129,10 @@ public class EmployeeDAOTest {
         Employee retrievedEmployee = employeeDAO.getEmployeeByID(1);
         assertNull(retrievedEmployee);
     }
-
+    /**
+     * Tests the deletion of an employee by email.
+     * Verifies that the correct employee is deleted and the other employees remain unaffected.
+     */
     @Test
     public void testDeleteEmployeeByEmail() {
         Employee employee1 = new Employee(1, "John", "Doe", "john.doe@example.com", String.valueOf(LocalDate.of(1980, 1, 1)), "Software Engineer", "Engineering", String.valueOf(LocalDate.of(2020, 1, 1)), 50000, "555-1234", "123 Main St.");
@@ -127,7 +150,10 @@ public class EmployeeDAOTest {
         assertNotNull(retrievedEmployee2);
         assertEquals(employee2.getEmail(), retrievedEmployee2.getEmail());
     }
-
+    /**
+     * Tests the retrieval of employees by filter criteria (department, job title, salary range).
+     * Verifies that the correct employees are returned based on the filter criteria.
+     */
     @Test
     public void testGetEmployeesByFilter() {
         // Create some employees
@@ -155,7 +181,10 @@ public class EmployeeDAOTest {
         assertTrue(engineeringSoftwareEmployees.stream().allMatch(e -> e.getDepartment().equals("Engineering") && e.getJobTitle().equals("Software Engineer")));
     }
 
-
+    /**
+     * Tests the retrieval of all employees.
+     * Verifies that all employees are returned and their details are correct.
+     */
     @Test
     public void testGetAllEmployees() {
         // Create some employees

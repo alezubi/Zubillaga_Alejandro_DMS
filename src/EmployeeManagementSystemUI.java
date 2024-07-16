@@ -11,13 +11,20 @@ import java.awt.event.ActionListener;
  *
  * A graphical user interface for an Employee Management System.
  */
+
 public class EmployeeManagementSystemUI {
     private JFrame frame; // The main frame for the application
 
     private static String dbUser;
     private static String dbPassword;
     private static String dbUrl;
-
+    /**
+     * Constructor for the EmployeeManagementSystemUI class.
+     * Initializes the UI with the provided database credentials.
+     * @param dbUser  The database username.
+     * @param dbPassword  The database password.
+     * @param dbUrl  The database URL.
+     */
     public EmployeeManagementSystemUI(String dbUser, String dbPassword, String dbUrl) {
         this.dbUser = dbUser;
         this.dbPassword = dbPassword;
@@ -26,18 +33,31 @@ public class EmployeeManagementSystemUI {
     }
 
     // Methods to retrieve database credentials
+    /**
+     * Returns the database username.
+     * @return The database username.
+     */
     public static String getDbUser() {
         return dbUser;
     }
-
+    /**
+     * Returns the database password.
+     * @return The database password.
+     */
     public static String getDbPassword() {
         return dbPassword;
     }
-
+    /**
+     * Returns the database URL.
+     * @return The database URL.
+     */
     public static String getDbUrl() {
         return dbUrl;
     }
-
+    /**
+     * Creates the user interface for the Employee Management System.
+     * Initializes the main frame, title panel, and menu panel with buttons.
+     */
     private void createUI() {
 
         frame = new JFrame("Employee Management System"); // Create the main frame with title

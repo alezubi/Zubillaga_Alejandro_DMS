@@ -100,6 +100,7 @@ public class Main {
      * displayMenu(): This method displays the main menu of the Employee Management System, showing the available options.
      * This method does not take any arguments.
      */
+
     private static void displayMenu() {
         System.out.println("Employee Management System");
         System.out.println("1. Create Employee");

@@ -101,6 +101,8 @@ public class EmployeeDAO {
      * This method does not return anything (void)
      * @param employee the Employee object containing the updated employee information
      */
+
+
     public void updateEmployee(Employee employee) {
         String sql = "UPDATE Employees SET FirstName = ?, LastName = ?, Email = ?, DateOfBirth = ?, JobTitle = ?, Department = ?, HireDate = ?, Salary = ?, PhoneNumber = ?, Address = ? WHERE EmployeeID = ?";
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
@@ -144,7 +146,9 @@ public class EmployeeDAO {
      * deleteEmployeeByEmail: Deletes an employee record from the database based on the employee's ID.
      * This method does not return anything (void)
      * the unique identifier of the employee to be deleted
+     * @param email
      */
+
     public void deleteEmployeeByEmail(String email) {
         String sql = "DELETE FROM Employees WHERE Email = ?";
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
@@ -165,6 +169,7 @@ public class EmployeeDAO {
      * This method returns a List<Employee> containing all the employee records retrieved from the database.
      * @return a list of Employee objects containing all employee records
      */
+
     public List<Employee> getAllEmployees() {
         List<Employee> employees = new ArrayList<>();
         String sql = "SELECT * FROM Employees";
