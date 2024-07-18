@@ -115,3 +115,7 @@ Go to file -> setting -> plugins -> JFormDesigner. This is used for the GUI Inte
 
 Download MySQL Command Line and MySQL Community. After that follow the steps in the SQL Data Creation.txt. 
 
+**JavaDoc**
+
+src/javadoc is the path to see the documentation in all the classes.
+
